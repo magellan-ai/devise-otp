@@ -14,19 +14,16 @@ module DeviseOtp
       # Displays the status of OTP authentication
       #
       def show
-        if resource.nil?
-          redirect_to stored_location_for(scope) || :root
-        else
-          render :show
-        end
+        redirect_to(stored_location_for(scope) || :root) unless resource
       end
 
       #
       # Updates the status of OTP authentication
       #
       def update
-        enabled = params[resource_name][:otp_enabled] == '1'
-        otp_set_flash_message :success, :successfully_updated if enabled ? resource.enable_otp! : resource.disable_otp!
+        enabled = ActiveModel::Type::Boolean.new.cast(params[resource_name][:otp_enabled])
+        success = enabled ? resource.enable_otp! : resource.disable_otp!
+        otp_set_flash_message :success, :successfully_updated if success
 
         render :show
       end
