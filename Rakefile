@@ -1,4 +1,6 @@
 #!/usr/bin/env rake
+# frozen_string_literal: true
+
 begin
   require 'bundler/setup'
 rescue LoadError
@@ -20,7 +22,6 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-
 Bundler::GemHelper.install_tasks
 
 require 'rake/testtask'
@@ -31,7 +32,7 @@ Rake::TestTask.new(:test) do |test|
 end
 
 desc 'Run Devise tests for all ORMs.'
-task :tests do
+task tests: :environment do
   Dir[File.join(File.dirname(__FILE__), 'test', 'orm', '*.rb')].each do |file|
     orm = File.basename(file).split(".").first
     system "rake test DEVISE_ORM=#{orm}"
@@ -39,4 +40,4 @@ task :tests do
 end
 
 desc 'Default: run tests for all ORMs.'
-task :default => :tests
+task default: :tests

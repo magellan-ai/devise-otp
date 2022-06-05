@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require 'integration_tests_helper'
 
 class RefreshTest < ActionDispatch::IntegrationTest
-
   def setup
-    @old_refresh = User.otp_credentials_refresh
+    @old_refresh                 = User.otp_credentials_refresh
     User.otp_credentials_refresh = 1.second
   end
 
@@ -41,7 +42,7 @@ class RefreshTest < ActionDispatch::IntegrationTest
     visit user_otp_token_path
     assert_equal refresh_user_otp_credential_path, current_path
 
-    fill_in 'user_refresh_password', :with => '12345678'
+    fill_in 'user_refresh_password', with: '12345678'
     click_button 'Continue...'
     assert_equal user_otp_token_path, current_path
   end
@@ -56,7 +57,7 @@ class RefreshTest < ActionDispatch::IntegrationTest
     visit user_otp_token_path
     assert_equal refresh_user_otp_credential_path, current_path
 
-    fill_in 'user_refresh_password', :with => '12345670'
+    fill_in 'user_refresh_password', with: '12345670'
     click_button 'Continue...'
     assert_equal refresh_user_otp_credential_path, current_path
   end
@@ -68,7 +69,7 @@ class RefreshTest < ActionDispatch::IntegrationTest
     visit user_otp_token_path
     assert_equal refresh_user_otp_credential_path, current_path
 
-    fill_in 'user_refresh_password', :with => '12345678'
+    fill_in 'user_refresh_password', with: '12345678'
     click_button 'Continue...'
 
     assert_equal user_otp_token_path, current_path

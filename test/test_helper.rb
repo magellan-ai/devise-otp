@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 ENV["RAILS_ENV"] = "test"
-DEVISE_ORM = (ENV["DEVISE_ORM"] || :active_record).to_sym
+DEVISE_ORM       = (ENV["DEVISE_ORM"] || :active_record).to_sym
 
 puts "\n==> Devise.orm = #{DEVISE_ORM.inspect}"
 require "dummy/config/environment"
@@ -11,9 +13,9 @@ require 'minitest/reporters'
 
 MiniTest::Reporters.use!
 
-#I18n.load_path << File.expand_path("../support/locale/en.yml", __FILE__) if DEVISE_ORM == :mongoid
+# I18n.load_path << File.expand_path("../support/locale/en.yml", __FILE__) if DEVISE_ORM == :mongoid
 
-#ActiveSupport::Deprecation.silenced = true
+# ActiveSupport::Deprecation.silenced = true
 
 # Use a module to not pollute the global namespace
 module CapybaraHelper

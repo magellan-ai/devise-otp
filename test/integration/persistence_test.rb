@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require 'integration_tests_helper'
 
 class PersistenceTest < ActionDispatch::IntegrationTest
-
   def setup
-    @old_persistence = User.otp_trust_persistence
+    @old_persistence           = User.otp_trust_persistence
     User.otp_trust_persistence = 3.seconds
   end
 

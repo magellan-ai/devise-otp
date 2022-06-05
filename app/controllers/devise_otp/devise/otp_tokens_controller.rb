@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DeviseOtp
   module Devise
     class OtpTokensController < DeviseController
@@ -6,7 +8,7 @@ module DeviseOtp
       prepend_before_action :ensure_credentials_refresh
       prepend_before_action :authenticate_scope!
 
-      protect_from_forgery :except => [:clear_persistence, :delete_persistence]
+      protect_from_forgery except: %i[clear_persistence delete_persistence]
 
       #
       # Displays the status of OTP authentication
@@ -24,9 +26,7 @@ module DeviseOtp
       #
       def update
         enabled = params[resource_name][:otp_enabled] == '1'
-        if (enabled ? resource.enable_otp! : resource.disable_otp!)
-          otp_set_flash_message :success, :successfully_updated
-        end
+        otp_set_flash_message :success, :successfully_updated if enabled ? resource.enable_otp! : resource.disable_otp!
 
         render :show
       end
@@ -35,49 +35,38 @@ module DeviseOtp
       # Resets OTP authentication, generates new credentials, sets it to off
       #
       def destroy
-        if resource.reset_otp_credentials!
-          otp_set_flash_message :success, :successfully_reset_creds
-        end
+        otp_set_flash_message :success, :successfully_reset_creds if resource.reset_otp_credentials!
 
-        redirect_to :action => :show
+        redirect_to action: :show
       end
 
       #
       # makes the current browser persistent
       #
       def get_persistence
-        if otp_set_trusted_device_for(resource)
-          otp_set_flash_message :success, :successfully_set_persistence
-        end
+        otp_set_flash_message :success, :successfully_set_persistence if otp_set_trusted_device_for(resource)
 
-        redirect_to :action => :show
+        redirect_to action: :show
       end
 
       #
       # clears persistence for the current browser
       #
       def clear_persistence
-        if otp_clear_trusted_device_for(resource)
-          otp_set_flash_message :success, :successfully_cleared_persistence
-        end
+        otp_set_flash_message :success, :successfully_cleared_persistence if otp_clear_trusted_device_for(resource)
 
-        redirect_to :action => :show
+        redirect_to action: :show
       end
 
       #
       # rehash the persistence secret, thus, making all the persistence cookies invalid
       #
       def delete_persistence
-        if otp_reset_persistence_for(resource)
-          otp_set_flash_message :notice, :successfully_reset_persistence
-        end
+        otp_set_flash_message :notice, :successfully_reset_persistence if otp_reset_persistence_for(resource)
 
-        redirect_to :action => :show
+        redirect_to action: :show
       end
 
-      #
-      #
-      #
       def recovery
         respond_to do |format|
           format.html
@@ -106,7 +95,6 @@ module DeviseOtp
       def self.controller_path
         "#{::Devise.otp_controller_path}/otp_tokens"
       end
-
     end
   end
 end

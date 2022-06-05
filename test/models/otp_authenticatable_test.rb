@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require 'model_tests_helper'
 
 class OtpAuthenticatableTest < ActiveSupport::TestCase
-
   def setup
     new_user
   end
@@ -12,7 +13,7 @@ class OtpAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test 'new users have OTP disabled by default' do
-    assert !User.first.otp_enabled
+    assert_not User.first.otp_enabled
   end
 
   test 'users should have an instance of TOTP/ROTP objects' do
@@ -27,43 +28,43 @@ class OtpAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test 'reset_otp_credentials should generate new secrets and disable OTP' do
-    u = User.first
+    u                    = User.first
     u.update_attribute(:otp_enabled, true)
     assert u.otp_enabled
-    otp_auth_secret = u.otp_auth_secret
+    otp_auth_secret      = u.otp_auth_secret
     otp_persistence_seed = u.otp_persistence_seed
 
     u.reset_otp_credentials!
-    assert !(otp_auth_secret == u.otp_auth_secret)
-    assert !(otp_persistence_seed == u.otp_persistence_seed)
-    assert !u.otp_enabled
+    assert otp_auth_secret != u.otp_auth_secret
+    assert otp_persistence_seed != u.otp_persistence_seed
+    assert_not u.otp_enabled
   end
 
   test 'reset_otp_persistence should generate new persistence_seed but NOT change the otp_auth_secret' do
-    u = User.first
+    u                    = User.first
     u.update_attribute(:otp_enabled, true)
     assert u.otp_enabled
-    otp_auth_secret = u.otp_auth_secret
+    otp_auth_secret      = u.otp_auth_secret
     otp_persistence_seed = u.otp_persistence_seed
 
     u.reset_otp_persistence!
-    assert (otp_auth_secret == u.otp_auth_secret)
-    assert !(otp_persistence_seed == u.otp_persistence_seed)
+    assert(otp_auth_secret == u.otp_auth_secret)
+    assert otp_persistence_seed != u.otp_persistence_seed
     assert u.otp_enabled
   end
 
   test 'generating a challenge, should retrieve the user later' do
-    u = User.first
+    u         = User.first
     u.update_attribute(:otp_enabled, true)
     challenge = u.generate_otp_challenge!
 
     w = User.find_valid_otp_challenge(challenge)
     assert w.is_a? User
-    assert_equal w,u
+    assert_equal w, u
   end
 
   test 'expiring the challenge, should retrieve nothing' do
-    u = User.first
+    u         = User.first
     u.update_attribute(:otp_enabled, true)
     challenge = u.generate_otp_challenge!(1.second)
     sleep(2)
@@ -73,7 +74,7 @@ class OtpAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test 'expired challenges should not be valid' do
-    u = User.first
+    u         = User.first
     u.update_attribute(:otp_enabled, true)
     challenge = u.generate_otp_challenge!(1.second)
     sleep(2)
@@ -92,7 +93,7 @@ class OtpAuthenticatableTest < ActiveSupport::TestCase
     u.update_attribute(:otp_enabled, true)
 
     secret = u.otp_auth_secret
-    token = ROTP::TOTP.new(secret).now
+    token  = ROTP::TOTP.new(secret).now
 
     assert_equal true, u.validate_otp_token(token)
   end
@@ -110,7 +111,7 @@ class OtpAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test 'recovery secrets should be valid, and valid only once' do
-    u = User.first
+    u        = User.first
     u.update_attribute(:otp_enabled, true)
     recovery = u.next_otp_recovery_tokens
 
