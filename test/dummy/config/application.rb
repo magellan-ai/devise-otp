@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+DEVISE_ORM = (ENV["DEVISE_ORM"] || :active_record).to_sym
+
 require File.expand_path('boot', __dir__)
 
 # Pick the frameworks you want:
@@ -20,7 +22,7 @@ end
 PARENT_MODEL_CLASS = DEVISE_ORM == :active_record ? ActiveRecord::Base : Object
 
 require "devise"
-require "devise-otp"
+require "devise_otp"
 
 module Dummy
   class Application < Rails::Application

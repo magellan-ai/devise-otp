@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'test_helper'
-require 'model_tests_helper'
+require_relative '../test_helper'
+require_relative '../model_tests_helper'
 
 class OtpAuthenticatableTest < ActiveSupport::TestCase
   def setup

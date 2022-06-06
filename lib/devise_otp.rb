@@ -51,8 +51,7 @@ module Devise
   mattr_accessor :otp_controller_path
   @@otp_controller_path = "devise"
 
-  module Otp
-  end
+  module Otp; end
 end
 
 module DeviseOtpAuthenticatable

@@ -8,15 +8,11 @@ class ActionDispatch::IntegrationTest
   end
 
   def create_full_user
-    @user ||=
-      begin
-        user = User.create!(
-          email:                 'user@email.invalid',
-          password:              '12345678',
-          password_confirmation: '12345678'
-        )
-        user
-      end
+    @user ||= User.create!(
+      email:                 'user@email.invalid',
+      password:              '12345678',
+      password_confirmation: '12345678'
+    )
   end
 
   def enable_otp_and_sign_in_with_otp

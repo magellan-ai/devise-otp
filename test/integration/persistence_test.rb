@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'test_helper'
-require 'integration_tests_helper'
+require_relative '../test_helper'
+require_relative '../integration_tests_helper'
 
 class PersistenceTest < ActionDispatch::IntegrationTest
   def setup
@@ -36,7 +36,7 @@ class PersistenceTest < ActionDispatch::IntegrationTest
     visit user_otp_token_path
     assert_equal user_otp_token_path, current_path
 
-    click_link('Trust this browser')
+    click_button('Trust this browser')
     assert_text 'Your browser is trusted.'
     sign_out
 
@@ -70,7 +70,7 @@ class PersistenceTest < ActionDispatch::IntegrationTest
     visit user_otp_token_path
     assert_equal user_otp_token_path, current_path
 
-    click_link('Trust this browser')
+    click_button('Trust this browser')
     assert_text 'Your browser is trusted.'
     sign_out
 
