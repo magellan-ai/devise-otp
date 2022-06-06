@@ -17,7 +17,7 @@ class ActionDispatch::IntegrationTest
 
   def enable_otp_and_sign_in_with_otp
     enable_otp_and_sign_in.tap do |user|
-      fill_in 'user_token', with: ROTP::TOTP.new(user.otp_auth_secret).at(Time.zone.now)
+      fill_in 'user[token]', with: ROTP::TOTP.new(user.otp_auth_secret).at(Time.zone.now)
       click_button 'Submit Token'
     end
   end
@@ -26,8 +26,11 @@ class ActionDispatch::IntegrationTest
     user = create_full_user
     sign_user_in(user)
     visit user_otp_token_path
-    check 'user_otp_enabled'
-    click_button 'Continue...'
+    click_link 'Enable 2FA'
+
+    user.reload
+    fill_in 'user[token]', with: ROTP::TOTP.new(user.otp_auth_secret).at(Time.zone.now)
+    click_button 'Finish'
 
     Capybara.reset_sessions!
 
@@ -36,14 +39,13 @@ class ActionDispatch::IntegrationTest
   end
 
   def otp_challenge_for(user)
-    fill_in 'user_token', with: ROTP::TOTP.new(user.otp_auth_secret).at(Time.zone.now)
+    fill_in 'user[token]', with: ROTP::TOTP.new(user.otp_auth_secret).at(Time.zone.now)
     click_button 'Submit Token'
   end
 
   def disable_otp
     visit user_otp_token_path
-    uncheck 'user_otp_enabled'
-    click_button 'Continue...'
+    click_button 'Disable 2FA'
   end
 
   def sign_out
@@ -57,7 +59,7 @@ class ActionDispatch::IntegrationTest
     fill_in "#{resource_name}_email", with: user.email
     fill_in "#{resource_name}_password", with: user.password
 
-    page.has_content?('Log in') ? click_button('Log in') : click_button('Sign in')
+    page.has_button?('Log in') ? click_button('Log in') : click_button('Sign in')
     user
   end
 end

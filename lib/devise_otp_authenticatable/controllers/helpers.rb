@@ -12,13 +12,13 @@ module DeviseOtpAuthenticatable
       # similar to DeviseController#set_flash_message, but sets the scope inside
       # the otp controller
       #
-      def otp_set_flash_message(key, kind, options = {})
+      def otp_set_flash_message(key, kind, **options)
         options[:scope]       ||= "devise.otp.#{controller_name}"
         options[:default]       = Array(options[:default]).unshift(kind.to_sym)
         options[:resource_name] = resource_name
         options                 = devise_i18n_options(options) if respond_to?(:devise_i18n_options, true)
         message                 = I18n.t("#{options[:resource_name]}.#{kind}", **options)
-        flash[key]              = message if message.present?
+        flash[key]              = message.presence
       end
 
       def otp_t; end

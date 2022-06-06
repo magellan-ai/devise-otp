@@ -25,19 +25,21 @@ en:
 
       token_secret:
         title: 'Your token secret'
-        explain: 'Take a photo of this QR code with your mobile device'
+        explain: 'Take a photo of this QR code with your one-time password generator. You may also manually enter the provisioning code below instead.'
         manual_provisioning: 'Manual provisioning code'
-        reset_otp: 'Reset your 2FA status'
-        reset_explain: 'This will reset your credentials and disable 2FA.'
-        reset_explain_warn: 'You will need to enroll your mobile device again.'
+        finalize: 'Once your authenticator has been set up, enter a generated one-time password in the field below to finalize setup.'
+        submit: 'Finish'
 
       otp_tokens:
-        title: 'Two-Factor Authentication'
+        title: 'Two-Factor Authentication Settings'
         explain: "Two-factor authentication (2FA) adds an additional layer of security to your account.\nWhen logging in, you will be asked for a code generated on a separate device, like your phone."
-        enable_request: 'Would you like to enable 2FA?'
 
-        status: 'Enable 2FA'
+        enable: 'Enable 2FA'
         submit: 'Continue...'
+
+        reset_otp: 'Disable 2FA'
+        reset_explain: 'This will reset your credentials and disable 2FA.'
+        reset_explain_warn: 'You will need to enroll your mobile device again.'
 
         successfully_updated: 'Your 2FA settings have been updated.'
         successfully_reset_creds: 'Your 2FA credentials have been reset.'
@@ -46,6 +48,8 @@ en:
         successfully_reset_persistence: 'Your list of trusted devices has been cleared.'
 
         need_to_refresh_credentials: 'Please confirm your credentials to change these settings.'
+        invalid_token: 'The provided one-time password was invalid. Please set up your generator again using the new codes below and try again.'
+        already_enabled: 'You have already enabled 2FA for this account. Please disable 2FA first if you would like to reset and reinitialize it.'
 
         recovery:
           title: 'Your Emergency Recovery Codes'
@@ -54,6 +58,10 @@ en:
           code: 'Recovery Code'
           codes_list: 'Here is your list of recovery codes'
           download_codes: 'Download recovery codes'
+
+      confirmation:
+        title: ''
+        explain: ''
 
       trusted_browsers:
         title: 'Trusted Browsers'

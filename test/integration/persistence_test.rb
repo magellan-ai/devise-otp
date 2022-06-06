@@ -45,7 +45,10 @@ class PersistenceTest < ActionDispatch::IntegrationTest
     assert_equal root_path, current_path
   end
 
-  test 'a user should be able to download its recovery codes' do
+  # TODO: No, recovery codes should ONLY be available immediately after registering your authenticator
+  # TODO: Also test that they ARE available after registering a new authenticator
+  test 'a user should be able to download their recovery codes' do
+    skip
     # log in 1fa
     user = enable_otp_and_sign_in
     otp_challenge_for user

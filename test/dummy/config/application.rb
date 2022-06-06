@@ -22,7 +22,7 @@ end
 PARENT_MODEL_CLASS = DEVISE_ORM == :active_record ? ActiveRecord::Base : Object
 
 require "devise"
-require "devise_otp"
+require "devise-otp"
 
 module Dummy
   class Application < Rails::Application

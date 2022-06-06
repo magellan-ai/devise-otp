@@ -87,4 +87,4 @@ module DownloadHelper
   end
 end
 
-require "devise_otp"
+require "devise-otp"

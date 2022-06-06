@@ -1,0 +1,15 @@
+<h3><%= I18n.t('title', scope: 'devise.otp.token_secret') %></h3>
+<p><%= I18n.t('explain', scope: 'devise.otp.token_secret') %></p>
+
+<%= otp_authenticator_token_image(resource) %>
+
+<p>
+  <strong><%= I18n.t('manual_provisioning', scope: 'devise.otp.token_secret') %>:</strong>
+  <code><%= resource.otp_auth_secret %></code>
+</p>
+
+<p><%= I18n.t('finalize', scope: 'devise.otp.token_secret') %></p>
+<%= form_with(model: resource, as: resource_name, url: otp_token_path_for(resource), method: :post, html: { data: { turbo: false } }) do |f| %>
+  <%= f.text_field :token, autocomplete: :off, autofocus: true, size: 6, value: '' %><br />
+  <p><%= f.submit I18n.t('submit', scope: 'devise.otp.token_secret') %></p>
+<% end %>
